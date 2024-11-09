@@ -31,6 +31,19 @@ The project is still in development phase, the next updates will be focused on t
 - [ ] Midi Loader
 - [ ] Midi Player
 
+## How to use
+
+### Testing
+#### Open the terminal in the root directory and type the following commands:
+
+To run all tests:
+
+`python -m unittest discover -s src/tests -p "*.py"`
+
+To test a single module, change `-p` argument to the desired module name:
+
+`python -m unittest discover -s src/tests -p MODULE_NAME`
+
 ## Team
 - [José](https://github.com/dev-joseh)
 - [Marcelo](https://github.com/marcelobasso)
