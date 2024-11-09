@@ -1,0 +1,1 @@
+# Carrega o arquivo MIDI e o transforma em uma estrutura utilizável pelo app

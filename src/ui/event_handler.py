@@ -1,0 +1,1 @@
+# Gerencia eventos de entrada (ex: clicks) e conecta os eventos a suas funções
