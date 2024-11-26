@@ -14,8 +14,8 @@ BoxLayout:
 
     BoxLayout:
         orientation: 'horizontal'
-        size_hint_y: 0.3
         horizontal_align: 'left'
+        size_hint_y: 1
 
         Image:
             size_hint_x: 0.0
@@ -23,19 +23,41 @@ BoxLayout:
 
         Label:
             size_hint_x: 0.0
-            text: '                Beethoven'
+            text: '              TCPlayer'
             font_name: "Inter-Bold"
             font_size: 48
 
     BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: 6
+
+        Label:
+            text: 'Input text'
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+            font_size: 16
+            font_name: "Inter-Regular"
+            size_hint_y: 0.2
+
+        TextInput:
+            background_color: utils.get_color_from_hex('#4D4D4D')
+            background_normal: ''
+            foreground_color: utils.get_color_from_hex('#FFFFFF')
+            multiline: True
+            size_hint_y: 0.8
+            id: text
+
+    BoxLayout:
         orientation: 'horizontal'
         spacing: 20
+        size_hint_y: 2
 
         BoxLayout:
             orientation: 'vertical'
 
             Label:
-                text: 'Beenstrument'
+                text: 'Instrument'
                 text_size: self.size
                 halign: 'left'
                 font_name: "Inter-Regular"
@@ -49,12 +71,13 @@ BoxLayout:
                 multiline: False
                 foreground_color: utils.get_color_from_hex('#FFFFFF')
                 id: instrument
+                size_hint_y: 0.7
 
         BoxLayout:
             orientation: 'vertical'
 
             Label:
-                text: 'BPM (bees/minute)'
+                text: 'BPM'
                 text_size: self.size
                 halign: 'left'
                 valign: 'middle'
@@ -68,38 +91,14 @@ BoxLayout:
                 multiline: False
                 foreground_color: utils.get_color_from_hex('#FFFFFF')
                 id: bpm
+                size_hint_y: 0.7
 
     BoxLayout:
         orientation: 'horizontal'
-        size_hint_y: 0.3
-
-        Label:
-            text: 'Beenput'
-            text_size: self.size
-            halign: 'left'
-            valign: 'middle'
-            font_size: 16
-            font_name: "Inter-Regular"
-
-    BoxLayout:
-        orientation: 'horizontal'
-        spacing: 20
-                
-        TextInput:
-            background_color: utils.get_color_from_hex('#4D4D4D')
-            background_normal: ''
-            foreground_color: utils.get_color_from_hex('#FFFFFF')
-            id: text
-
-        FileChooserIconView:
-            id: file
-
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint_y: 0.5
+        size_hint_y: 1
 
         Button:
-            text: 'Beenarate'
+            text: 'Compose'
             background_normal: ''
             background_color: rgba("#D49C2D")
             font_size: 20
