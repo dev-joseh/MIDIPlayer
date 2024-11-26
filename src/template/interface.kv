@@ -1,0 +1,109 @@
+#:import utils kivy.utils
+
+BoxLayout:
+    orientation: 'vertical'
+    padding: 30
+    spacing: 20
+
+    canvas:
+        Color:
+            rgb: utils.get_color_from_hex('#282828')
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: 0.3
+        horizontal_align: 'left'
+
+        Image:
+            size_hint_x: 0.0
+            source: 'assets/icons/logo.png'
+
+        Label:
+            size_hint_x: 0.0
+            text: '                Beethoven'
+            font_name: "Inter-Bold"
+            font_size: 48
+
+    BoxLayout:
+        orientation: 'horizontal'
+        spacing: 20
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            Label:
+                text: 'Beenstrument'
+                text_size: self.size
+                halign: 'left'
+                font_name: "Inter-Regular"
+                valign: 'middle'
+                font_size: 16
+                size_hint_y: 0.3
+                
+            TextInput:
+                background_color: utils.get_color_from_hex('#4D4D4D')
+                background_normal: ''
+                multiline: False
+                foreground_color: utils.get_color_from_hex('#FFFFFF')
+                id: instrument
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            Label:
+                text: 'BPM (bees/minute)'
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+                font_name: "Inter-Regular"
+                font_size: 16
+                size_hint_y: 0.3
+                
+            TextInput:
+                background_color: utils.get_color_from_hex('#4D4D4D')
+                background_normal: ''
+                multiline: False
+                foreground_color: utils.get_color_from_hex('#FFFFFF')
+                id: bpm
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: 0.3
+
+        Label:
+            text: 'Beenput'
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+            font_size: 16
+            font_name: "Inter-Regular"
+
+    BoxLayout:
+        orientation: 'horizontal'
+        spacing: 20
+                
+        TextInput:
+            background_color: utils.get_color_from_hex('#4D4D4D')
+            background_normal: ''
+            foreground_color: utils.get_color_from_hex('#FFFFFF')
+            id: text
+
+        FileChooserIconView:
+            id: file
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: 0.5
+
+        Button:
+            text: 'Beenarate'
+            background_normal: ''
+            background_color: rgba("#D49C2D")
+            font_size: 20
+            font_name: "Inter-Medium"
+            color: 0, 0, 0, 1
+            on_press: app.generate()
+            id: main_button

@@ -1,7 +1,7 @@
 # Testa a mudança de volume, oitava e velocidade
 import unittest
 from unittest.mock import Mock
-from src.controllers.midi_controller import MidiController
+from src.controllers.__midi_controller import MidiController
 
 class TestMidiController(unittest.TestCase):
     def setUp(self):

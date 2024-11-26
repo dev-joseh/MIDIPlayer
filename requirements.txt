@@ -1,1 +1,6 @@
+gensound==0.5.3
+idna==3.10
+Kivy==2.3.0
+Kivy-Garden==0.1.5
 pygame==2.6.1
+simpleaudio==1.0.4
