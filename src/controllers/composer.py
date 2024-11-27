@@ -1,7 +1,7 @@
 import random
 import pygame
 from midiutil import MIDIFile
-# from src.player import Player
+from controllers.player import Player
 import time
 
 harpa = ["I", "i", "O", "o", "U", "u"]
@@ -13,12 +13,12 @@ class Composer:
         self.__bpm = __bpm
         self.__instrument = instrument
         self.__volume = 50
-        self.__octave = 1
+        self.__octave = 0
         self.__track = 0
         self.__channel = 0
         self.__time = 0
         self.__duration = 1
-        # self.__player = Player()
+        self.__player = Player()
 
     def get___bpm(self):
         return self.__bpm
@@ -41,76 +41,74 @@ class Composer:
     def __note_exists(self, note):
         return note in notes
 
-    # def compose(self):
-    #     pygame.midi.init()
-    #     output = pygame.midi.Output(0)
-    #     escala = 12
+    def compose(self):
+        pygame.midi.init()
+        output = pygame.midi.Output(0)
+        escala = 12
 
-    #     midi_file = MIDIFile(1)
+        midi_file = MIDIFile(1)
 
-    #     midi_file.addTempo(self.__track, self.__time, self.__bpm)
+        midi_file.addTempo(self.__track, self.__time, self.__bpm)
 
-    #     # Set the program change event to the selected instrument
-    #     output.set_instrument(self.__instrument)
-    #     midi_file.addProgramChange(self.__track, self.__channel, self.__time, self.__instrument)
+        # Set the program change event to the selected instrument
+        output.set_instrument(self.__instrument)
+        midi_file.addProgramChange(self.__track, self.__channel, self.__time, self.__instrument)
 
-    #     for note in self.__text:
-    #         volume_atual = self.__volume
-    #         final_note = 0
+        for note in self.__text:
+            volume_atual = self.__volume
+            final_note = 0
 
-    #         # Dobra o volume e continua o loop
-    #         if note == " ":
-    #             self.__double_volume()
-    #             continue
+            # Dobra o volume e continua o loop
+            if note == " ":
+                self.__double_volume()
+                continue
             
-    #         # Aumenta a oitava e continua o loop
-    #         if note == "?" or note == ".":
-    #             self.__increase_octave()
-    #             continue
+            # Aumenta a oitava e continua o loop
+            if note == "?" or note == ".":
+                self.__increase_octave()
+                continue
 
-    #         # Troca o instrumento sem tocar nada e continua o loop
-    #         if note == "!" or note in harpa or note == "\n" or note == ";" or note == "," or note.isnumeric():
-    #             self.__instrument = self.__player.play_instrument(note, self.__instrument, output)
+            # Troca o instrumento sem tocar nada e continua o loop
+            if note == "!" or note in harpa or note == "\n" or note == ";" or note == "," or note.isnumeric():
+                self.__instrument = self.__player.play_instrument(note, self.__instrument, output)
 
-    #             output.set_instrument(self.__instrument)
-    #             midi_file.addProgramChange(self.__track, self.__channel, self.__time, self.__instrument)
+                output.set_instrument(self.__instrument)
+                midi_file.addProgramChange(self.__track, self.__channel, self.__time, self.__instrument)
 
-    #             time.sleep(60 / self.__bpm)
-    #             self.__time += 1
+                time.sleep(60 / self.__bpm)
+                self.__time += 1
 
-    #             continue
+                continue
 
-    #         # Se a nota atual existir, toca ela
-    #         if self.__note_exists(note):
-    #             final_note = self.__player.play_note(note, self.__instrument, self.__octave, volume_atual, escala, output)
-    #         # Senão, repete a ultima nota
-    #         else:
-    #             final_note = self.__player.repeat_note(self.__instrument, self.__octave, volume_atual, escala, output)
+            # Se a nota atual existir, toca ela
+            if self.__note_exists(note):
+                final_note = self.__player.play_note(note, self.__instrument, self.__octave, volume_atual, escala, output)
+            # Senão, repete a ultima nota
+            else:
+                final_note = self.__player.repeat_note(self.__instrument, self.__octave, volume_atual, escala, output)
             
-    #         time.sleep(60 / self.__bpm)
-    #         output.note_off(final_note, 0)
+            time.sleep(60 / self.__bpm)
+            output.note_off(final_note, 0)
 
-    #         if final_note == 10:
-    #             volume_atual = 0
-    #         midi_file.addNote(self.__track, self.__channel, final_note, self.__time, self.__duration, volume_atual)
+            if final_note == 10:
+                volume_atual = 0
+            midi_file.addNote(self.__track, self.__channel, final_note, self.__time, self.__duration, volume_atual)
 
-    #         self.__time += 1
+            self.__time += 1
 
-    #     output_file = "output/output.mid"
+        output_file = "output/output.mid"
 
-    #     with open(output_file, "wb") as output_file:
-    #         midi_file.writeFile(output_file)
+        with open(output_file, "wb") as output_file:
+            midi_file.writeFile(output_file)
 
-    #     output.note_off(final_note, 0)
+        output.note_off(final_note, 0)
 
-    #     del output
-    #     pygame.midi.quit()
+        del output
+        pygame.midi.quit()
 
-    #     pygame.init()
-    #     pygame.mixer.music.load("output/output.mid")
-    #     pygame.mixer.music.play()
-    #     while pygame.mixer.music.get_busy():
-    #         pygame.time.wait(100)
+        pygame.init()
+        pygame.mixer.music.load("output/output.mid")
+        pygame.mixer.music.play()
 
     def __double_volume(self):
         self.__volume *= 2

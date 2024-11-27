@@ -1,6 +1,6 @@
 from kivy.app import App
-# from ..composer import Composer
-# from ..reader import Reader
+from controllers.composer import Composer
+from controllers.reader import Reader
 
 class Interface(App):
     __is_loading = False
@@ -44,27 +44,18 @@ class Interface(App):
     def __get_text(self):
         self.__text_input = self.root.ids.text.text
 
-    def __get_file(self):
-        self.__file_input = self.root.ids.file.selection[0] if len(self.root.ids.file.selection) == 1 else ''
+    def generate(self):
+        self.__get_instrument()
+        self.__get_bpm()
+        self.__get_text()
 
-    # def generate(self):
-    #     self.__get_instrument()
-    #     self.__get_bpm()
-    #     self.__get_text()
-    #     self.__get_file()
+        self.__set_loading(True)
 
-    #     self.__set_loading(True)
+        file_text = ''
+        generate_input = self.__text_input + file_text
 
-    #     file_text = ''
+        composer = Composer(generate_input, self.__bpm_input, self.__instrument_input)
 
-    #     if (self.__file_input != ''):
-    #         reader = Reader(self.__file_input)
-    #         file_text = reader.read_file()
+        composer.compose()
 
-    #     generate_input = self.__text_input + file_text
-
-    #     composer = Composer(generate_input, self.__bpm_input, self.__instrument_input)
-
-    #     composer.compose()
-
-    #     self.__set_loading(False)
+        self.__set_loading(False)
