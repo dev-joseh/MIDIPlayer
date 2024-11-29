@@ -2,7 +2,7 @@
 
 This project aims to create a MIDI player application using Object Oriented program construction techniques, aimed at practicing the implementation of modular software.
 
-<img src="imagem.jpeg" alt="Initial model">
+<img src="mock.jpeg" alt="Initial model">
 
 > Initial idea
 
