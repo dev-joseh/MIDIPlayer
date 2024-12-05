@@ -59,6 +59,7 @@ App:
         background_color: utils.get_color_from_hex('#5e5e5e')
         foreground_color: utils.get_color_from_hex('#FFFFFF')
         background_normal: ''
+        id: text_input
         
 <Controls@BoxLayout>:
     orientation: "vertical"
@@ -123,7 +124,7 @@ App:
     size_hint: 1, None
     height: 32
 
-<File@BoxLayout>:
+<File>:
     orientation: "vertical"
 
     InputLabel:
@@ -136,7 +137,8 @@ App:
             Rectangle:
                 pos: self.pos
                 size: self.size
-        on_selection: root.select(*args)
+        id: file
+        on_selection: root.on_file_selected(self)
 
 <InputLabel@Label>:
     size_hint: 1, None
