@@ -1,17 +1,27 @@
 class Reader:
+    __text = ''
+
     def __init__(self, file):
         self.__file = file
 
     def __file_is_txt(self):
-        return self.__file.endswith('.txt')
+        return self.__file.endswith('.txt') 
+
+    def __get_text(self):
+        return self.__text
+    
+    def __set_text(self, text):
+        self.__text = text
 
     def read_file(self):
-        if (not self.__file_is_txt()):
-            print('Error opening file!')
-            return ''
+        try:
+            if (self.__file_is_txt()):
+                with open(self.__file, 'r') as f:
+                    self.__set_text(f.read())
+            else:
+                print("Only txt files are allowed")
 
-        fl = open(self.__file, 'r')
+        except IOError:
+            print("Could not read file: ", self.__file)
 
-        text = fl.read()
-
-        return text
+        return self.__get_text()

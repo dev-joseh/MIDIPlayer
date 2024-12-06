@@ -1,8 +1,8 @@
 #:import utils kivy.utils
 
-App:
+Interface:
 
-<App@BoxLayout>:
+<Interface>:
     orientation: "vertical"
     spacing: 20
     padding: 30
@@ -15,101 +15,110 @@ App:
             size: self.size
             pos: self.pos    
     
-    Header:
+    BoxLayout:
+        orientation: "horizontal"
+        vertical_align: "center"
         size_hint: 1, .10
+
+        Image:
+            source: "assets/icons/logo.png"
+            size_hint: None, None
+            size: "48dp", "48dp"
+
+        Label:
+            text: "TCPlayer"
+            text_size: self.size
+            valign: "center"
+            halign: "left"
+            font_name: "../assets/fonts/Inter-Bold"
+            font_size: 40
+            padding_x: "24dp"
 
     BoxLayout:
         orientation: "horizontal"
 
-        MainBlock:
+        BoxLayout:
+            id: player_main_block
+            orientation: "vertical"
+
+            InputLabel:
+                text: "Input text"
+                id: input_label
+
+            TextInput:
+                background_color: utils.get_color_from_hex('#5e5e5e')
+                foreground_color: utils.get_color_from_hex('#FFFFFF')
+                background_normal: ''
+                text: root.text_input
+                id: main_input
+
         BoxLayout:
             size_hint: None, 1
             width: 20
-        Controls:
 
-# ---------------------
-# main blocks
-# ---------------------
+        BoxLayout:
+            orientation: "vertical"
 
-<Header@BoxLayout>:
-    orientation: "horizontal"
-    vertical_align: "center"
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint: 1, None
+                height: 72
 
-    Image:
-        source: "assets/icons/logo.png"
-        size_hint: None, None
-        size: "48dp", "48dp"
+                BoxLayout:
+                    padding: "8dp"
+                    orientation: "vertical"
 
-    Label:
-        text: "TCPlayer"
-        text_size: self.size
-        valign: "center"
-        halign: "left"
-        font_name: "../assets/fonts/Inter-Bold"
-        font_size: 40
-        padding_x: "24dp"
+                    InputLabel:
+                        text: "Instrument"
+                    NumberInputs:
+                        text: root.instrument_input
+                        id: instrument_input
+                    
+                
+                BoxLayout:
+                    padding: "8dp"
+                    orientation: "vertical"
 
-<MainBlock@BoxLayout>:
-    orientation: "vertical"
+                    InputLabel:
+                        text: "BPM"
+                    NumberInputs:
+                        text: root.bpm_input
+                        id: bpm_input
 
-    InputLabel:
-        text: "Input text"
+            BoxLayout:
+                orientation: "vertical"
+                padding: 8
 
-    TextInput:
-        background_color: utils.get_color_from_hex('#5e5e5e')
-        foreground_color: utils.get_color_from_hex('#FFFFFF')
-        background_normal: ''
-        id: text_input
-        
-<Controls@BoxLayout>:
-    orientation: "vertical"
+                InputLabel:
+                    text: "Select from file"
 
-    IntrumentAndBpm:
-        size_hint: 1, None
-        height: 72
+                FileChooserListView:
+                    canvas.before:
+                        Color:
+                            rgb: .4, .5, .5
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    id: file
+                    on_selection: root.on_file_selected(self.selection) if len(self.selection) == 1 else ''
 
-    File:
-        padding: 8
-
-    # separator (maybe fix later)
-    BoxLayout:
-        size_hint: 1, None
-        height: 16
-    
-    BoxLayout
-        size_hint: 1, None
-        height: 40
-        Button:
-            text: "Compose and play"
-            font_name: "../assets/fonts/InterDisplay-Light.ttf"
-            background_normal: ''
-            background_color: rgba("#D49C2D")
-            color: 0, 0, 0, 1
-            font_size: 20
-            #on_press: app.generate()
-            id: main_button
-
-<IntrumentAndBpm@BoxLayout>:
-    orientation: "horizontal"
-
-    BoxLayout:
-        padding: "8dp"
-        orientation: "vertical"
-
-        InputLabel:
-            text: "Instrument"
-        NumberInputs:
-            id: instrument_input
-        
-    
-    BoxLayout:
-        padding: "8dp"
-        orientation: "vertical"
-
-        InputLabel:
-            text: "BPM"
-        NumberInputs:
-            id: bpm_input
+            # separator (maybe fix later)
+            BoxLayout:
+                size_hint: 1, None
+                height: 16
+            
+            BoxLayout
+                size_hint: 1, None
+                height: 40
+                Button:
+                    text: "Compose and play"
+                    font_name: "../assets/fonts/InterDisplay-Light.ttf"
+                    background_normal: ''
+                    background_color: rgba("#D49C2D")
+                    color: 0, 0, 0, 1
+                    font_size: 20
+                    on_press: app.generate_symphony()
+                    id: main_button
 
 # ---------------------
 # modular blocks
@@ -124,21 +133,6 @@ App:
     size_hint: 1, None
     height: 32
 
-<File>:
-    orientation: "vertical"
-
-    InputLabel:
-        text: "Select from file"
-
-    FileChooserListView:
-        canvas.before:
-            Color:
-                rgb: .4, .5, .5
-            Rectangle:
-                pos: self.pos
-                size: self.size
-        id: file
-        on_selection: root.on_file_selected(self)
 
 <InputLabel@Label>:
     size_hint: 1, None
