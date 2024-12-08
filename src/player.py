@@ -38,21 +38,17 @@ class Player:
     
     def compose(self):
 
-        # Inicializa a saída MIDI
         pygame.midi.init()
         output_id = pygame.midi.get_default_output_id()
         saida_midi = pygame.midi.Output(output_id)
 
-        # Teste da classe
         decoder = Decoder()
 
         midi_filename = "output.mid"
 
-        # Decodificando e tocando o MIDI
         decoder.decode(self.__text, saida_midi, midi_filename)
 
-        # Tocar o arquivo MIDI salvo
-        pygame.midi.quit()  # Fechar antes de abrir novamente
+        pygame.midi.quit() 
         pygame.midi.init()
 
         midi_file = mido.MidiFile(midi_filename)
