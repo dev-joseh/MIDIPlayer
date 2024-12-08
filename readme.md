@@ -47,5 +47,5 @@ To test a single module, change `-p` argument to the desired module name:
 ## Team
 - [José](https://github.com/dev-joseh)
 - [Marcelo](https://github.com/marcelobasso)
-- Gisele
+- [Gisele](https://github.com/giselerotta)
 - Isadora
