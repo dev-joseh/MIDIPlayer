@@ -40,9 +40,8 @@ class Interface(BoxLayout, App):
         self.text_input = self.__sanitize_file_text(self.reader.read_file())
 
     def generate_symphony(self):
-        print(self.text_input, self.bpm_input, self.instrument_input)
         # symphonist = Symphonist(text=self.text_input, bpm=self.bpm_input, instrument=self.instrument_input)
-        # player = Player(text=self.text_input, bpm=self.bpm_input, instrument=self.instrument_input)
-        # player.compose()
+        player = Player(text=self.text_input, bpm=self.bpm_input, instrument=self.instrument_input)
+        player.compose()
 
     
