@@ -56,7 +56,7 @@ class Player:
 
     def compose(self):
         midi_file = MIDIFile(1)
-        escala = 1
+        escala = 12
         midi_file.addTempo(self.__track, self.__time, self.__bpm)
         midi_file.addProgramChange(self.__track, self.__channel, self.__time, self.__instrument)
 
