@@ -26,29 +26,23 @@ class Decoder:
 
             return new_instrument
 
-    def play_instrument(self, note, instrument, output):
+    def play_instrument(self, note, instrument):
         new_instrument = self.__get_instrument(note, instrument)
 
         self.__nota_atual = "A#"
 
         return new_instrument
 
-    def repeat_note(self, instrument, octave, volume, escala, output):
+    def repeat_note(self, instrument, octave, volume, escala):
         final_note = 10
         if self.__nota_atual != "A#":
             final_note = (octave * escala) + (notes.index(self.__nota_atual))
             self.__nota_atual = "A#"
 
-            output.set_instrument(instrument)
-            output.note_on(final_note, volume)
-
         return final_note
 
-    def play_note(self, note, instrument, octave, volume, escala, output):
+    def play_note(self, note, instrument, octave, volume, escala):
         final_note = (octave * escala) + (notes.index(note))
         self.__nota_atual = note
         
-        output.set_instrument(instrument)
-        output.note_on(final_note, volume)
-
         return final_note
