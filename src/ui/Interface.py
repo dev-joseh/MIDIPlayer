@@ -3,9 +3,10 @@ from file_reader import Reader
 from symphonist import Symphonist
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
+from player import Player
 
 class Interface(BoxLayout, App):
-    text_input = StringProperty('Type your text here...')
+    text_input = StringProperty('AAAAAaaaBBB')
     instrument_input = StringProperty('1')
     bpm_input = StringProperty('120')
     reader = None
@@ -18,13 +19,11 @@ class Interface(BoxLayout, App):
     def set_instrument(self, instrument):
         self.instrument_input = instrument
 
-
     def get_bpm(self):
         return self.bpm_input
     
     def set_bpm(self, bpm):
         self.bpm_input = bpm
-
 
     def get_text(self):
         return self.text_input
@@ -41,6 +40,9 @@ class Interface(BoxLayout, App):
         self.text_input = self.__sanitize_file_text(self.reader.read_file())
 
     def generate_symphony(self):
-        symphonist = Symphonist(text=self.text_input, bpm=self.bpm_input, instrument=self.instrument_input)
+        print(self.text_input, self.bpm_input, self.instrument_input)
+        # symphonist = Symphonist(text=self.text_input, bpm=self.bpm_input, instrument=self.instrument_input)
+        # player = Player(text=self.text_input, bpm=self.bpm_input, instrument=self.instrument_input)
+        # player.compose()
 
     

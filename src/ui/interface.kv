@@ -50,6 +50,7 @@ Interface:
                 foreground_color: utils.get_color_from_hex('#FFFFFF')
                 background_normal: ''
                 text: root.text_input
+                on_text: root.set_text(self.text)
                 id: main_input
 
         BoxLayout:
@@ -72,6 +73,7 @@ Interface:
                         text: "Instrument"
                     NumberInputs:
                         text: root.instrument_input
+                        on_text: root.set_instrument(self.text)
                         id: instrument_input
                     
                 
@@ -83,6 +85,7 @@ Interface:
                         text: "BPM"
                     NumberInputs:
                         text: root.bpm_input
+                        on_text: root.set_bpm(self.text)
                         id: bpm_input
 
             BoxLayout:
