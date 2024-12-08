@@ -1,7 +1,9 @@
 import pygame
 import pygame.midi
+import mido
 from midiutil import MIDIFile
 from midi_decoder import Decoder
+# from midi_decoder_gica import Decoder
 
 # Se caractere anterior era NOTA (A a G), repete nota; Caso contrário, fazer som de “Telefone tocando” (125)
 telephone = ["I", "i", "O", "o", "U", "u"]
@@ -64,14 +66,6 @@ class Player:
             volume_atual = self.__volume
             final_note = 0
 
-            # Dobra o volume e continua o loop
-            # if note == " ":
-            #     self.__double_volume()
-            
-            # Aumenta a oitava e continua o loop
-            # if note == "?" or note == ".":
-            #     self.__increase_octave()
-
             # Troca o instrumento sem tocar nada e continua o loop
             if note == "!" or note in telephone or note == "\n" or note == ";" or note == "," or note.isnumeric():
                 self.__instrument = self.__player.play_instrument(note, self.__instrument)
@@ -95,4 +89,3 @@ class Player:
         pygame.init()
         pygame.mixer.music.load("output/output.mid")
         pygame.mixer.music.play()
-    

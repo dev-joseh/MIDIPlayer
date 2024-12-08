@@ -28,7 +28,6 @@ class Decoder:
 
     def play_instrument(self, note, instrument):
         new_instrument = self.__get_instrument(note, instrument)
-
         self.__nota_atual = "A#"
 
         return new_instrument
