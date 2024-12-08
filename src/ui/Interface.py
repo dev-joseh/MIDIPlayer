@@ -1,6 +1,5 @@
 from kivy.app import App
 from file_reader import Reader
-from symphonist import Symphonist
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
 from player import Player
@@ -33,14 +32,13 @@ class Interface(BoxLayout, App):
 
     # checks if text is not null
     def __sanitize_file_text(self, text):
-            return text if text else self.text_input
+        return text if text else self.text_input
 
     def on_file_selected(self, selection):
         self.reader = Reader(selection[0])
         self.text_input = self.__sanitize_file_text(self.reader.read_file())
 
     def generate_symphony(self):
-        # symphonist = Symphonist(text=self.text_input, bpm=self.bpm_input, instrument=self.instrument_input)
         player = Player(text=self.text_input, bpm=self.bpm_input, instrument=self.instrument_input)
         player.compose()
 

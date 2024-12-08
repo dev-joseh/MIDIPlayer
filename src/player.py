@@ -17,11 +17,7 @@ class Player:
         self.__volume = 50
         self.__octave = 0
         self.__track = 0
-        self.__channel = 0
-        self.__time = 0
-        self.__duration = 1
-        self.__player = Decoder()
-
+        
     def get___bpm(self):
         return self.__bpm
 
@@ -39,10 +35,7 @@ class Player:
 
     def get_octave(self):
         return self.__octave
-
-    def __note_exists(self, note):
-        return note in notes
-
+    
     def compose(self):
 
         # Inicializa a saída MIDI
@@ -72,16 +65,3 @@ class Player:
 
         output.close()
         pygame.midi.quit()
-
-
-    def __double_volume(self):
-        self.__volume *= 2
-
-        if self.__volume > 127:
-            self.__reset_volume()
-
-    def __reset_volume(self):
-        self.__volume = 50
-
-    def __increase_octave(self):
-        self.__octave += 1
