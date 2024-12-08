@@ -10,7 +10,7 @@ Interface:
     # draws background color
     canvas:
         Color:
-            rgb: utils.get_color_from_hex('#282828')
+            rgb: utils.get_color_from_hex('#222831')
         Rectangle:
             size: self.size
             pos: self.pos    
@@ -33,6 +33,7 @@ Interface:
             font_name: "../assets/fonts/Inter-Bold"
             font_size: 40
             padding_x: "24dp"
+            color: utils.get_color_from_hex('#EEEEEE')
 
     BoxLayout:
         orientation: "horizontal"
@@ -46,7 +47,7 @@ Interface:
                 id: input_label
 
             TextInput:
-                background_color: utils.get_color_from_hex('#5e5e5e')
+                background_color: utils.get_color_from_hex('#31363F')
                 foreground_color: utils.get_color_from_hex('#FFFFFF')
                 background_normal: ''
                 text: root.text_input
@@ -117,7 +118,7 @@ Interface:
                     text: "Compose and play"
                     font_name: "../assets/fonts/InterDisplay-Light.ttf"
                     background_normal: ''
-                    background_color: rgba("#D49C2D")
+                    background_color: rgba("#76ABAE")
                     color: 0, 0, 0, 1
                     font_size: 20
                     on_press: app.generate_symphony()
@@ -128,7 +129,7 @@ Interface:
 # ---------------------
 
 <NumberInputs@TextInput>:
-    background_color: utils.get_color_from_hex('#5e5e5e')
+    background_color: utils.get_color_from_hex('#31363F')
     foreground_color: utils.get_color_from_hex('#FFFFFF')
     background_normal: ''
     input_type: "number"

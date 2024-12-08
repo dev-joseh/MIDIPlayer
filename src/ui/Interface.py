@@ -6,7 +6,7 @@ from kivy.properties import StringProperty
 from player import Player
 
 class Interface(BoxLayout, App):
-    text_input = StringProperty('AAAAAaaaBBB')
+    text_input = StringProperty('2CDEFF F CDCDD D CGFEE E CDEFF F2,CDEFF F CDCDD D CGFEE E CDEFF F,CDEFF F CDCDD D CGFEE E CDEFF F,')
     instrument_input = StringProperty('1')
     bpm_input = StringProperty('120')
     reader = None
