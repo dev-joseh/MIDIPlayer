@@ -6,9 +6,6 @@ from decoder import Decoder
 import time
 import mido
 
-harpa = ["I", "i", "O", "o", "U", "u"]
-notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-
 class Player:
     def __init__(self, text, bpm, instrument):
         self.__text = text
@@ -20,7 +17,6 @@ class Player:
         self.__channel = 0
         self.__time = 0
         self.__duration = 1
-        self.__player = Decoder()
 
     def get___bpm(self):
         return self.__bpm
@@ -31,57 +27,29 @@ class Player:
     def get_instrument(self):
         return self.__instrument
 
-    def set_instrument(self, instrument):
-        self.__instrument = instrument
-
-    def get_volume(self):
-        return self.__volume
-
-    def get_octave(self):
-        return self.__octave
-
-    def __note_exists(self, note):
-        return note in notes
-
     def compose(self):
 
         # Inicializa a saída MIDI
         pygame.midi.init()
         output_id = pygame.midi.get_default_output_id()
         saida_midi = pygame.midi.Output(output_id)
+        midi_file = MIDIFile(1)
+        escala = 12
+        midi_file.addTempo(self.__track, self.__time, self.__bpm)
+        midi_file.addProgramChange(self.__track, self.__channel, self.__time, self.__instrument)
 
         # Teste da classe
-        decoder = Decoder()
+        decoder = Decoder(midi_file, self.__instrument, self.__bpm)
 
         midi_filename = "output.mid"
 
         # Decodificando e tocando o MIDI
-        decoder.decode(self.__text, saida_midi, midi_filename)
+        midi_file = decoder.decode(self.__text)
 
-        # Tocar o arquivo MIDI salvo
-        pygame.midi.quit()  # Fechar antes de abrir novamente
-        pygame.midi.init()
+        with open(midi_filename, "wb") as midi_out:
+            midi_file.writeFile(midi_out)
 
-        midi_file = mido.MidiFile(midi_filename)
-        output = pygame.midi.Output(output_id)
-        for msg in midi_file.play():
-            if msg.type == 'note_on':
-                output.note_on(msg.note, msg.velocity)
-            elif msg.type == 'note_off':
-                output.note_off(msg.note, msg.velocity)
-
-        output.close()
         pygame.midi.quit()
-
-
-    def __double_volume(self):
-        self.__volume *= 2
-
-        if self.__volume > 127:
-            self.__reset_volume()
-
-    def __reset_volume(self):
-        self.__volume = 50
-
-    def __increase_octave(self):
-        self.__octave += 1
+        pygame.init()
+        pygame.mixer.music.load(midi_filename)
+        pygame.mixer.music.play()

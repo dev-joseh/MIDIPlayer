@@ -1,118 +1,96 @@
 import random
-import mido
-import pygame.midi
-import time
+from midiutil import MIDIFile
 
-# Notas e mapeamentos 
-## REVER ##
+# Notas e mapeamentos
 notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 vogais = ["I", "i", "O", "o", "U", "u"]
 
 class Decoder:
-    def __init__(self):
-        self.__nota_atual = 'A'
+    def __init__(self, midi_file, instrument=0, bpm=120):
+        """Inicializa a classe com um arquivo MIDI existente."""
+        self.__midi_file = midi_file  # O MIDIFile existente
+        self.__track = 0  # Track única (pode ser ajustado conforme necessário)
+        self.__instrument = instrument  # Instrumento padrão
+        self.__tempo = bpm  # BPM padrão
+        self.__time = 0.0  # Tempo inicial em batidas
+        self.__octave = 5  # Oitava padrão
         self.__volume = 64  # Volume padrão
-        self.__octave = 5  # Octava padrão
-        self.__instrument = 0  # Instrumento padrão (Piano)
-        self.__tempo = 120  # BPM padrão
-        self.__midi_file = None  # Arquivo MIDI
-        self.__track = None  # Track para adicionar os eventos MIDI
-        self.__last_note_time = 0  # Variável para controlar o tempo de execução das notas
+        self.__nota_atual = None  # Nota atual (para repetir)
 
     def play_note(self, note):
+        """Toca uma nota específica."""
         final_note = (self.__octave * 12) + notes.index(note)
         self.__nota_atual = note
-        self.__track.append(mido.Message('note_on', note=final_note, velocity=self.__volume, time=0))
-        self.__track.append(mido.Message('note_off', note=final_note, velocity=self.__volume, time=500))  # Duração fixa para a nota
+        self.__midi_file.addNote(self.__track, 0, final_note, self.__time, 1, self.__volume)
+        self.__time += 1  # Avança o tempo em 1 batida
 
     def play_telefone(self):
-        # Toca o som do telefone (nota MIDI 125)
-        self.__track.append(mido.Message('note_on', note=125, velocity=100, time=self.__current_time))
-        self.__track.append(mido.Message('note_off', note=125, velocity=100, time=self.__current_time + 500))  # Define a duração da nota
+        """Toca o som do telefone (nota MIDI 125)."""
+        self.__midi_file.addNote(self.__track, 0, 125, self.__time, 1, self.__volume)
+        self.__time += 1
 
     def change_octave(self, direction):
+        """Muda a oitava."""
         if direction == "+":
             self.__octave += 1
         elif direction == "-":
             self.__octave -= 1
 
     def change_volume(self, direction):
+        """Muda o volume."""
         if direction == "+":
-            self.__volume *= 2
+            self.__volume = min(self.__volume * 2, 127)
         elif direction == "-":
-            self.__volume = 64  # Volume padrão
+            self.__volume = 64
 
     def random_note(self):
+        """Toca uma nota aleatória."""
         random_note = random.choice(notes)
         self.play_note(random_note)
 
-    def decode(self, text, output, midi_filename):
-        self.__midi_file = mido.MidiFile()  # Novo arquivo MIDI
-        self.__track = mido.MidiTrack()  # Nova track dentro do arquivo MIDI
-        self.__midi_file.tracks.append(self.__track)
-
-        # Configurar o tempo (BPM)
-        tempo = mido.bpm2tempo(self.__tempo)
-        self.__track.append(mido.MetaMessage('set_tempo', tempo=tempo))
-
-        # Calculando o intervalo entre as notas baseado no BPM
-        interval = 60 / self.__tempo  # Tempo entre notas, em segundos (de acordo com o BPM)
-
-        i = 0  # Variável para iterar pelos caracteres
+    def decode(self, text):
+        """Decodifica o texto e adiciona as notas ao arquivo MIDI existente."""
+        i = 0
         while i < len(text):
             if text[i:i+4] == "BPM+":
-                # Quando encontrar "BPM+", aumenta o BPM
-                self.__tempo = min(self.__tempo + 80, 300)  # Limita o BPM máximo a 300
-                tempo = mido.bpm2tempo(self.__tempo)
-                self.__track.append(mido.MetaMessage('set_tempo', tempo=tempo))
-                interval = 60 / self.__tempo  # Atualiza o intervalo entre notas
-                i += 4  # Pula os 4 caracteres "BPM+"
+                self.__tempo = min(self.__tempo + 80, 300)
+                self.__midi_file.addTempo(self.__track, self.__time, self.__tempo)
+                i += 4
             elif text[i] in "abcdefgABCDEFG":
-                # Toca a nota correspondente e adiciona ao arquivo MIDI
                 self.play_note(text[i].upper())
-                #time.sleep(interval)  # Espera para tocar a próxima nota
-                i += 1  # Passa para o próximo caractere
+                i += 1
             elif text[i] == " ":
-                # Silêncio, adiciona pausa no MIDI
-                self.__track.append(mido.Message('note_off', note=0, velocity=0, time=int(interval * 1000)))
-                i += 1  # Passa para o próximo caractere
-            elif text[i] == "+" or text[i] == "-":
-                # Modifica o volume
+                # Adiciona uma pausa (simula silêncio com incremento de tempo)
+                self.__time += 1
+                i += 1
+            elif text[i] in "+-":
                 self.change_volume(text[i])
                 i += 1
             elif text[i:i+2] == "R+" or text[i:i+2] == "R-":
-                # Modifica a oitava
                 self.change_octave(text[i+1])
                 i += 2
             elif text[i] in vogais:
-                if text[i-1] in "abcdefgABCDEF":
-                    # Se o caractere anterior era uma nota (A a G), repete a nota
+                if self.__nota_atual:
                     self.play_note(self.__nota_atual)
                 else:
-                    # Caso contrário, toca o som do telefone (nota 125)
                     self.play_telefone()
                 i += 1
             elif text[i] == "?":
-                # Tocar uma nota aleatória
                 self.random_note()
-                #time.sleep(interval)
                 i += 1
             elif text[i] == "\n":
-                # Trocar instrumento
-                self.__instrument = random.randint(0, 128)
+                # Trocar instrumento aleatoriamente
+                self.__instrument = random.randint(0, 127)
+                self.__midi_file.addProgramChange(self.__track, 0, self.__time, self.__instrument)
                 i += 1
             elif text[i] == ";":
-                # Atribui valor aleatório à BPM
+                # Define BPM aleatório
                 self.__tempo = random.randint(60, 180)
-                interval = 60 / self.__tempo  # Atualiza o intervalo entre notas
-                i += 1
-            elif text[i].isnumeric():
-                # Mudar instrumento (ajustado conforme descrito)
-                self.__instrument = int(text[i])
+                self.__midi_file.addTempo(self.__track, self.__time, self.__tempo)
                 i += 1
             else:
                 # Ignora caracteres desconhecidos
                 i += 1
 
-        # Salva o arquivo MIDI
-        self.__midi_file.save(midi_filename)
+        # Retorna o novo MIDIFile com as notas adicionadas
+        return self.__midi_file
