@@ -1,4 +1,4 @@
-from ui.Interface import Interface
+from ui.interface import Interface
 
 if __name__ == '__main__':
     interface = Interface()
