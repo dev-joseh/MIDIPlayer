@@ -1,1 +1,0 @@
-# Testa o funcionamento dos controles (botões e slides)

@@ -5,10 +5,12 @@ from kivy.properties import StringProperty
 from player import Player
 
 class Interface(BoxLayout, App):
-    text_input = StringProperty('2CDEFF F CDCDD D CGFEE E CDEFF F2,CDEFF F CDCDD D CGFEE E CDEFF F,CDEFF F CDCDD D CGFEE E CDEFF F,')
-    instrument_input = StringProperty('1')
-    bpm_input = StringProperty('120')
-    reader = None
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.text_input = '2CDEFF F CDCDD D CGFEE E CDEFF F2,CDEFF F CDCDD D CGFEE E CDEFF F,CDEFF F CDCDD D CGFEE E CDEFF F,'
+        self.instrument_input = '1'
+        self.bpm_input = '120'
+        self.reader = None
 
     # public
     def get_instrument(self):

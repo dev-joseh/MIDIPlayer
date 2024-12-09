@@ -1,1 +1,0 @@
-# Testa a função de abertura e parsing do arquivo
