@@ -42,20 +42,17 @@ class TestInterface(unittest.TestCase):
 
     @patch('ui.interface.Reader')
     def test_on_file_selected(self, MockReader):
-        # Aplique um mock para Reader com o comportamento esperado
         mock_instance = MockReader.return_value
         mock_instance.read_file.return_value = "fake text"
 
-        # Simule a seleção de arquivo
         selection = ['fake_file.txt']
         self.interface.on_file_selected(selection)
 
-        # Verifique se o texto foi atribuído corretamente
         self.assertEqual(self.interface.text_input, "fake text")
         MockReader.assert_called_once_with('fake_file.txt')
         mock_instance.read_file.assert_called_once()
 
-    @patch('ui.interface.Reader')  # Alterar para o caminho completo de importação
+    @patch('ui.interface.Reader')
     def test_on_file_selected(self, MockReader):
         mock_instance = MockReader.return_value
         mock_instance.read_file.return_value = "fake text"
