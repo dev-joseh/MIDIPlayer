@@ -15,16 +15,16 @@ class Interface(BoxLayout, App):
     # public
     def get_instrument(self):
         return self.instrument_input
-    
+
     # private
     def set_instrument(self, instrument):
-        self.instrument_input = instrument
+        self.instrument_input = instrument if instrument and instrument.isnumeric() else '1'
 
     def get_bpm(self):
         return self.bpm_input
     
     def set_bpm(self, bpm):
-        self.bpm_input = bpm
+        self.bpm_input = bpm if bpm and bpm.isnumeric() else '120'
 
     def get_text(self):
         return self.text_input

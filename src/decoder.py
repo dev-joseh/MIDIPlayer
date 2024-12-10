@@ -46,35 +46,43 @@ class Decoder:
     def decode(self, text):
         next_char = 0
         while next_char < len(text):
-            if text[next_char:next_char+4] == "BPM+":
+            if text[next_char:next_char + 4] == "BPM+":
                 self.__bpm = min(self.__bpm + 80, 300)
                 self.__midi_file.addTempo(self.__track, self.__time, self.__bpm)
                 next_char += 4
+
             elif text[next_char] in "abcdefgABCDEFG":
                 self.play_note(text[next_char].upper())
                 next_char += 1
+
             elif text[next_char] == " ":
                 self.__time += 1
                 next_char += 1
+
             elif text[next_char] in "+-":
                 self.change_volume(text[next_char])
                 next_char += 1
+
             elif text[next_char:next_char+2] == "R+" or text[next_char:next_char+2] == "R-":
                 self.change_octave(text[next_char+1])
                 next_char += 2
+
             elif text[next_char] in vogais:
                 if self.__current_note:
                     self.play_note(self.__current_note)
                 else:
                     self.play_telefone()
+
                 next_char += 1
             elif text[next_char] == "?":
                 self.random_note()
                 next_char += 1
+
             elif text[next_char] == "\n":
                 self.__instrument = random.randint(0, 127)
                 self.__midi_file.addProgramChange(self.__track, 0, self.__time, self.__instrument)
                 next_char += 1
+
             elif text[next_char] == ";":
                 self.__bpm = random.randint(60, 180)
                 self.__midi_file.addTempo(self.__track, self.__time, self.__bpm)
